@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Student Grade Predictor</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Student Grade Predictor</h1>
+
+      <form method="post" novalidate>
+        {% with messages = get_flashed_messages(category_filter=["error"]) %} {%
+        if messages %}
+        <div class="errors">
+          <ul>
+            {% for m in messages %}
+            <li>{{ m }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+        {% endif %} {% endwith %}
+
+        <div class="grid">
+          {% for key, label in fields %}
+          <div class="field">
+            <label for="{{ key }}">{{ label }}</label>
+            <input
+              id="{{ key }}"
+              name="{{ key }}"
+              type="text"
+              inputmode="numeric"
+              pattern="[0-9]*"
+            />
+          </div>
+          {% endfor %}
+        </div>
+
+        <div class="actions">
+          <button type="submit" class="btn">Predict</button>
+        </div>
+      </form>
+
+      {% if prediction is not none %}
+      <div class="result">
+        <h2>
+          Predicted Final Grade: <span class="score">{{ prediction }}</span>
+        </h2>
+        <p class="hint">(Grade scale: 0 - 20)</p>
+      </div>
+      {% endif %}
+
+      <footer>
+        <p>
+          Tip: Enter grades and values, then click Predict. For batch
+          predictions, use the CSV upload feature (not included in this demo).
+        </p>
+      </footer>
+    </div>
+  </body>
+</html>
